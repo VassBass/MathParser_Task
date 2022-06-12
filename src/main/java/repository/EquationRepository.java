@@ -10,7 +10,7 @@ public interface EquationRepository {
 
     boolean add(Equation equation);
 
-    boolean set(Equation oldEquation, Equation newEquation);
+    boolean set(Equation equation);
 
     boolean remove(int id);
 }

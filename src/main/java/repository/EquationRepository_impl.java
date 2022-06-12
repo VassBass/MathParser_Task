@@ -26,7 +26,7 @@ public class EquationRepository_impl implements EquationRepository {
     }
 
     @Override
-    public boolean set(Equation oldEquation, Equation newEquation) {
+    public boolean set(Equation equation) {
         return false;
     }
 

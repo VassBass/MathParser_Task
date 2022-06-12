@@ -20,8 +20,8 @@ public class EquationService_impl implements EquationService {
     }
 
     @Override
-    public boolean set(Equation oldEquation, Equation newEquation) {
-        return repository.set(oldEquation, newEquation);
+    public boolean set(Equation equation) {
+        return repository.set(equation);
     }
 
     @Override

@@ -8,7 +8,7 @@ public interface EquationService {
     ArrayList<Equation>getAll();
     Equation get(int id);
 
-    boolean set(Equation oldEquation, Equation newEquation);
+    boolean set(Equation equation);
 
     boolean add(Equation equation);
 
