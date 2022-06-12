@@ -1,37 +1,36 @@
 package service;
 
 import model.Equation;
+import repository.EquationRepository;
+import repository.EquationRepository_impl;
 
 import java.util.ArrayList;
 
 public class EquationService_impl implements EquationService {
-    @Override
-    public void init(String dbUrl) {
-
-    }
+    private final EquationRepository repository = new EquationRepository_impl();
 
     @Override
     public ArrayList<Equation> getAll() {
-        return null;
+        return repository.getAll();
     }
 
     @Override
-    public Equation getEquation(int id) {
-        return null;
+    public Equation get(int id) {
+        return repository.get(id);
     }
 
     @Override
-    public boolean setEquation(Equation oldEquation, Equation newEquation) {
-        return false;
+    public boolean set(Equation oldEquation, Equation newEquation) {
+        return repository.set(oldEquation, newEquation);
     }
 
     @Override
-    public boolean addEquation(Equation equation) {
-        return false;
+    public boolean add(Equation equation) {
+        return repository.add(equation);
     }
 
     @Override
-    public boolean removeEquation(int id) {
-        return false;
+    public boolean remove(int id) {
+        return repository.remove(id);
     }
 }

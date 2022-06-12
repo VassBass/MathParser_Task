@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class Equation {
 
     private int id;
@@ -20,4 +22,19 @@ public class Equation {
     public int getId(){return id;}
     public String getEquation(){return equation;}
     public String getResult(){return result;}
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id,equation,result);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || obj.getClass() != getClass()) return false;
+        if (obj.equals(this)) return true;
+
+        Equation o = (Equation) obj;
+        return o.getEquation().equals(this.equation)
+                && o.getResult().equals(this.getResult());
+    }
 }

@@ -29,4 +29,5 @@ public class MainScreen extends JFrame {
     private void setReactions(){
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
+
 }
