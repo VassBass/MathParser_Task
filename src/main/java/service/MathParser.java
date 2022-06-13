@@ -36,6 +36,7 @@ public class MathParser {
             }else if (chars[index] == '-'){
                 if (!Character.isDigit(chars[index+1])){
                     if (chars[index+1] == '-' && !Character.isDigit(chars[index+2])) return false;
+                    if (chars[index+1] == ')') return false;
                 }
 
                 dotHasAlreadyBeen = false;
@@ -46,7 +47,26 @@ public class MathParser {
     }
 
     public static String calculate(String equation){
+        if (equationIsCorrect(equation)){
+            char[]chars = prepare(equation).toCharArray();
+            int left = -1;
+            int right = -1;
+            for (int index = 0;index< chars.length;index++){
+                if (chars[index] == '('){
+                    left = index;
+                    right = -1;
+                }else if (chars[index] == ')' && right == -1){
+                    right = index;
+                }
+            }
 
+            if (left == -1){
+                return parseDouble(equation);
+            }else {
+                String s = parseDouble(equation.substring(left, right));
+                return calculate(equation.substring(0, left) + s + equation.substring(right));
+            }
+        }else return null;
     }
 
     /**
