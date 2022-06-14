@@ -45,12 +45,12 @@ public class EquationService_impl implements EquationService {
     /**
      * Adds new equation
      * @param equation to add
-     * @return true if equation was added or false if not
+     * @return id of added equation or -1 if equation wasn't added
      * @see EquationRepository#add(Equation)
      * @see EquationRepository_impl#add(Equation) 
      */
     @Override
-    public boolean add(Equation equation) {
+    public int add(Equation equation) {
         return repository.add(equation);
     }
 

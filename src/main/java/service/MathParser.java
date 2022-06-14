@@ -42,6 +42,8 @@ public class MathParser {
 
                 dotHasAlreadyBeen = false;
             }else if (chars[index] == '('){
+                if (Character.isDigit(chars[index-1])) return false;
+
                 openParentheses++;
                 dotHasAlreadyBeen = false;
             }else if (chars[index] == ')'){

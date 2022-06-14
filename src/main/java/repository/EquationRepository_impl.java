@@ -112,26 +112,28 @@ public class EquationRepository_impl implements EquationRepository {
     /**
      * Adds new equation to DB
      * @param equation to add
-     * @return true if equation was added or false if DB wasn't found
+     * @return id of added equation or -1 if DB wasn't found
      * @see #DB_URL
      */
     @Override
-    public boolean add(Equation equation) {
+    public int add(Equation equation) {
         String sql = "INSERT INTO equations (equation, result)"
-                + "VALUES ("
-                + "'" + equation.getEquation() + "'"
-                + ", " + equation.getResult()
-                + ");";
+                + "VALUES (?,?);";
+
         try (Connection connection = getConnection();
-             Statement statement = connection.createStatement()){
+             PreparedStatement statement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)){
 
-            statement.execute(sql);
-            return true;
+            statement.setString(1, equation.getEquation());
+            statement.setDouble(2, equation.getResult());
 
+            statement.execute();
+            try (ResultSet resultSet = statement.getGeneratedKeys()){
+                if (resultSet.next()) return resultSet.getInt(1);
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            return false;
         }
+        return -1;
     }
 
     /**

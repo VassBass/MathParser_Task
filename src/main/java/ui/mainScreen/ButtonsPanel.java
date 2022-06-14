@@ -1,10 +1,10 @@
 package ui.mainScreen;
 
+import ui.equationInfo.EquationInfoDialog;
 import ui.model.DefaultButton;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ButtonsPanel extends JPanel {
@@ -51,9 +51,12 @@ public class ButtonsPanel extends JPanel {
         btn_remove.setEnabled(enabled);
     }
 
-    private final ActionListener clickAdd = e -> {
-
-    };
+    private final ActionListener clickAdd = e -> EventQueue.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+            new EquationInfoDialog(owner, null).setVisible(true);
+        }
+    });
 
     private final ActionListener clickRemove = e -> {
 
@@ -67,7 +70,7 @@ public class ButtonsPanel extends JPanel {
 
     };
 
-    private class Cell extends GridBagConstraints {
+    private static class Cell extends GridBagConstraints {
         Cell(int x, int y){
             super();
 

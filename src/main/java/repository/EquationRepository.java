@@ -22,10 +22,10 @@ public interface EquationRepository {
     /**
      * Adds new equation
      * @param equation to add
-     * @return true if equation was added or false if not
+     * @return id of added equation or -1 if equation wasn't added
      * @see EquationRepository_impl#add(Equation)
      */
-    boolean add(Equation equation);
+    int add(Equation equation);
 
     /**
      * Changes equation with id of equation from @param
