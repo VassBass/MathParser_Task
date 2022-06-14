@@ -22,9 +22,10 @@ public class EquationInfoDialog extends JDialog {
     private static final String ADD = "Add";
     private static final String CALCULATE = "Calculate";
     private static final String OOPS = "Oops!";
+    private static final String CHANGE = "Change";
 
     private static final String CALCULATE_TOOLTIP = "Calculates equation result";
-    private static final String ADD_TOOLTIP = "Before add you must calculate equation";
+    private static final String ADD_TOOLTIP = "Before add/change you must calculate equation";
     private static final String EQUATION_TOOLTIP = "Use numbers and symbols + - * / ( )";
 
     private final MainScreen mainScreen;
@@ -65,6 +66,7 @@ public class EquationInfoDialog extends JDialog {
         if (equation != null){
             txt_equation.setText(equation.getEquation());
             txt_result.setText(String.valueOf(equation.getResult()));
+            btn_add.setText(CHANGE);
         }else btn_add.setEnabled(false);
     }
 
@@ -119,7 +121,12 @@ public class EquationInfoDialog extends JDialog {
             Equation newEquation = new Equation();
             newEquation.setEquation(txt_equation.getText());
             newEquation.setResult(Double.parseDouble(txt_result.getText()));
-            mainScreen.addEquation(newEquation);
+            if (equation == null) {
+                mainScreen.addEquation(newEquation);
+            }else {
+                newEquation.setId(equation.getId());
+                mainScreen.setEquation(newEquation);
+            }
         }
     };
 

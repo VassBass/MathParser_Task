@@ -1,10 +1,12 @@
 package ui.mainScreen;
 
+import model.Equation;
 import ui.equationInfo.EquationInfoDialog;
 import ui.model.DefaultButton;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ButtonsPanel extends JPanel {
@@ -12,6 +14,10 @@ public class ButtonsPanel extends JPanel {
     private static final String CHANGE = "Change";
     private static final String REMOVE = "Remove";
     private static final String SEARCH = "Search";
+
+    private String removeMessage(Equation equation){
+        return "Delete equation \"" + equation.getEquation() + "\" with result = " + equation.getResult() + " ?";
+    }
 
     private final MainScreen owner;
 
@@ -58,16 +64,27 @@ public class ButtonsPanel extends JPanel {
         }
     });
 
-    private final ActionListener clickRemove = e -> {
-
+    private final ActionListener clickRemove = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Equation equation = owner.getSelectedEquation();
+            if (equation != null){
+                int result = JOptionPane.showConfirmDialog(owner, removeMessage(equation), REMOVE, JOptionPane.YES_NO_OPTION);
+                if (result == 0) owner.removeEquation(equation.getId());
+            }
+        }
     };
 
     private final ActionListener clickSearch = e -> {
 
     };
 
-    private final ActionListener clickChange = e -> {
-
+    private final ActionListener clickChange = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Equation equation = owner.getSelectedEquation();
+            if (equation != null) new EquationInfoDialog(owner,equation).setVisible(true);
+        }
     };
 
     private static class Cell extends GridBagConstraints {
