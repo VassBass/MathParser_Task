@@ -7,6 +7,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainTable extends JTable {
     private static final String EQUATION = "Equation";
@@ -43,7 +44,7 @@ public class MainTable extends JTable {
         for (Equation equation : list) {
             String[] data = new String[2];
             data[0] = equation.getEquation();
-            data[1] = equation.getResult();
+            data[1] = String.format(Locale.GERMAN,"%2f", equation.getResult());
 
             model.addRow(data);
         }
