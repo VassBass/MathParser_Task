@@ -16,11 +16,12 @@ public class MathParser {
         equation = prepare(equation);
         char[]chars = equation.toCharArray();
         boolean dotHasAlreadyBeen = false;
+        int openParentheses = 0;
         for (int index = 0;index < chars.length;index++){
             if (Character.isLetter(chars[index])){
                 return false;
             }else if (chars[index] == '.'){
-                if (!Character.isDigit(chars[index-1])){
+                if (!Character.isDigit(chars[index-1]) && !Character.isDigit(chars[index+1])){
                     return false;
                 }else if (dotHasAlreadyBeen){
                     return false;
@@ -40,15 +41,37 @@ public class MathParser {
                 }
 
                 dotHasAlreadyBeen = false;
+            }else if (chars[index] == '('){
+                openParentheses++;
+                dotHasAlreadyBeen = false;
+            }else if (chars[index] == ')'){
+                if (openParentheses == 0) return false;
+                openParentheses--;
+                dotHasAlreadyBeen = false;
             }
         }
 
-        return true;
+        return openParentheses == 0;
     }
 
+    /**
+     * Calculate result of equation
+     * Can identify symbols '+', '-', '*', '/'
+     * Can identify integers and doubles (doubles with dots and commas)
+     * Can identify nesting levels created by symbols '(', ')'
+     * @param equation to calculate
+     *
+     * @return String with result in double. null if equation == null or if equation has incorrect characters
+     * Can be transformed to double
+     * @see Double#parseDouble(String)
+     * @see #equationIsCorrect(String)
+     */
     public static String calculate(String equation){
+        if (equation == null){
+            return null;
+        }else equation = prepare(equation);
         if (equationIsCorrect(equation)){
-            char[]chars = prepare(equation).toCharArray();
+            char[]chars = equation.toCharArray();
             int left = -1;
             int right = -1;
             for (int index = 0;index< chars.length;index++){
@@ -63,8 +86,8 @@ public class MathParser {
             if (left == -1){
                 return parseDouble(equation);
             }else {
-                String s = parseDouble(equation.substring(left, right));
-                return calculate(equation.substring(0, left) + s + equation.substring(right));
+                String s = parseDouble(equation.substring(left+1, right));
+                return calculate(equation.substring(0, left) + s + equation.substring(right+1));
             }
         }else return null;
     }
