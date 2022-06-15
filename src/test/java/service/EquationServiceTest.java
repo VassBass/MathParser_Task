@@ -74,7 +74,6 @@ class EquationServiceTest {
                 sql.deleteCharAt(sql.length()-1);
                 sql.append(";");
 
-                System.out.println(sql);
                 statement.execute(sql.toString());
             }
         }catch (SQLException e){
