@@ -18,15 +18,13 @@ public class Equation {
      * Field in DB:
      * sqlite = equation
      */
-    private String equation;
+    private String equation = "4.20";
 
     /**
      * Field in DB:
      * sqlite = result
      */
-    private double result;
-
-    public Equation(){}
+    private double result = 4.20;
 
     public void setId(int id){this.id = id;}
     public void setEquation(String equation){this.equation = equation;}
@@ -44,7 +42,7 @@ public class Equation {
     @Override
     public boolean equals(Object obj) {
         if (obj == null || obj.getClass() != getClass()) return false;
-        if (obj.equals(this)) return true;
+        if (obj == this) return true;
 
         Equation o = (Equation) obj;
         return o.getEquation().equals(this.equation)

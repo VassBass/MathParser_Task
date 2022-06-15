@@ -10,7 +10,15 @@ import java.util.ArrayList;
  * Implementation of {@link EquationService} by using {@link EquationRepository} to storage of equation
  */
 public class EquationService_impl implements EquationService {
-    private final EquationRepository repository = new EquationRepository_sqlite();
+    private final EquationRepository repository;
+
+    public EquationService_impl(){
+        this.repository = new EquationRepository_sqlite();
+    }
+
+    public EquationService_impl(EquationRepository repository){
+        this.repository = repository;
+    }
 
     /**
      * @return list of equations from repository

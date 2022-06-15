@@ -102,7 +102,7 @@ public class EquationRepository_sqlite implements EquationRepository {
      */
     @Override
     public Equation get(int id) {
-        String sql = "SELECT 1 FROM equations WHERE id = " + id + ";";
+        String sql = "SELECT * FROM equations WHERE id = " + id + ";";
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)){
