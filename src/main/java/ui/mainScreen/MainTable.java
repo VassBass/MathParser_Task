@@ -9,6 +9,11 @@ import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.Locale;
 
+/**
+ * Table to show equations and their results
+ *
+ * @see MainScreen
+ */
 public class MainTable extends JTable {
     private static final String EQUATION = "Equation";
     private static final String RESULT = "Result";

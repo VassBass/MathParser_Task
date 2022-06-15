@@ -2,10 +2,28 @@ package model;
 
 import java.util.Objects;
 
+/**
+ * Table in DB:
+ * sqlite = equations
+ */
 public class Equation {
 
+    /**
+     * Field in DB:
+     * sqlite = id
+     */
     private int id;
+
+    /**
+     * Field in DB:
+     * sqlite = equation
+     */
     private String equation;
+
+    /**
+     * Field in DB:
+     * sqlite = result
+     */
     private double result;
 
     public Equation(){}
@@ -31,5 +49,19 @@ public class Equation {
         Equation o = (Equation) obj;
         return o.getEquation().equals(this.equation)
                 && o.getResult() == this.getResult();
+    }
+
+    /**
+     * @return equation object in json
+     */
+    @Override
+    public String toString() {
+        return "{\n"
+                + "\t\"Equation\":{\n"
+                + "\t\t\"id\": " + this.id + ",\n"
+                + "\t\t\"equation\": \"" + this.equation + "\",\n"
+                + "\t\t\"result\": " + this.result + "\n"
+                + "\t}\n"
+                + "}";
     }
 }

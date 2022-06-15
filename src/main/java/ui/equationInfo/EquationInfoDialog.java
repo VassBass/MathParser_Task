@@ -14,6 +14,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Dialog to put information about new equation or changing information about old one
+ *
+ * @see MainScreen
+ * @see ui.mainScreen.ButtonsPanel
+ *
+ */
 public class EquationInfoDialog extends JDialog {
     private static final String TITLE = "Equation Info";
     private static final String EQUATION = "Equation";
@@ -44,6 +51,9 @@ public class EquationInfoDialog extends JDialog {
         setReactions();
     }
 
+    /**
+     * Creates and customizes appearance of content elements
+     */
     private void createElements(){
         txt_equation = new JTextField(20);
         TitledBorder equationBorder = BorderFactory.createTitledBorder(EQUATION);
@@ -70,25 +80,19 @@ public class EquationInfoDialog extends JDialog {
         }else btn_add.setEnabled(false);
     }
 
+    /**
+     * Sets up the size, location, appearance and content of dialog
+     */
     private void build(){
-        this.setResizable(false);
-        MainPanel mainPanel = new MainPanel();
-
-        int w = 0;
-        int h = 0;
-        for (Component c : mainPanel.getComponents()){
-            if (w < c.getWidth()) w = c.getWidth();
-            h += c.getHeight();
-        }
-        int width = w > 0 ? w : 200;
-        int height = h > 0 ? h : 200;
-
-        this.setSize(width, height);
+        this.setSize(300, 250);
         this.setLocation(Location.CENTER(mainScreen, this));
 
         this.setContentPane(new MainPanel());
     }
 
+    /**
+     * Assign reactions to user actions to dialog and content
+     */
     private void setReactions(){
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
@@ -147,12 +151,16 @@ public class EquationInfoDialog extends JDialog {
         public void changedUpdate(DocumentEvent e) {}
     };
 
+    /**
+     * Panel of dialog content
+     */
     private class MainPanel extends JPanel {
         MainPanel(){
             super(new GridBagLayout());
             this.setBackground(Color.WHITE);
 
             JPanel buttonsPanel = new JPanel();
+            buttonsPanel.setBackground(Color.WHITE);
             buttonsPanel.add(btn_cancel);
             buttonsPanel.add(btn_add);
 

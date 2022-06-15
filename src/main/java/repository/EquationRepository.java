@@ -1,45 +1,77 @@
 package repository;
 
 import model.Equation;
+import service.EquationService_impl;
 
 import java.util.ArrayList;
 
+/**
+ * Repository to storage of equations
+ * @see EquationRepository_sqlite
+ */
 public interface EquationRepository {
 
     /**
      * @return list of equations
-     * @see EquationRepository_impl#getAll() 
+     *
+     * @see EquationRepository_sqlite#getAll()
      */
     ArrayList<Equation>getAll();
 
     /**
      * @param id of equation who need to search
-     * @return equation with this id or null if equation with this id not found
-     * @see EquationRepository_impl#get(int)
+     *
+     * @return equation with this id
+     * null if equation with this id not found
+     *
+     * @see EquationRepository_sqlite#get(int)
      */
     Equation get(int id);
 
     /**
+     * @param condition of search (<, <=, =, >=, >)
+     *
+     * @param result number for compare by condition of search with equations results
+     *
+     * @return list of equations that match the search terms
+     *
+     * @see EquationRepository_sqlite#get(String, double)
+     */
+    ArrayList<Equation>get(String condition, double result);
+
+    /**
      * Adds new equation
+     *
      * @param equation to add
-     * @return id of added equation or -1 if equation wasn't added
-     * @see EquationRepository_impl#add(Equation)
+     *
+     * @return id of added equation
+     * -1 if equation wasn't added
+     *
+     * @see EquationRepository_sqlite#add(Equation)
      */
     int add(Equation equation);
 
     /**
      * Changes equation with id of equation from @param
+     *
      * @param equation to change
-     * @return true if equation was changed or false if not
-     * @see EquationRepository_impl#set(Equation) 
+     *
+     * @return true if equation was changed
+     * false if not
+     *
+     * @see EquationRepository_sqlite#set(Equation)
      */
     boolean set(Equation equation);
 
     /**
      * Removes equation with this id
+     *
      * @param id of equation who need to removed
-     * @return true if equation was removed or false if not
-     * @see EquationRepository_impl#remove(int)
+     *
+     * @return true if equation was removed
+     * false if not
+     *
+     * @see EquationRepository_sqlite#remove(int)
      */
     boolean remove(int id);
 }

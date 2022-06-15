@@ -6,13 +6,19 @@ import org.sqlite.JDBC;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class EquationRepository_impl implements EquationRepository {
+/**
+ * Implementation of {@link EquationRepository} to storage of equation in DB SQLite
+ */
+public class EquationRepository_sqlite implements EquationRepository {
     private static String DB_URL = "jdbc:sqlite:Data.db";
 
     /**
      * Registers a DB-driver and connects to it
+     *
      * @return Connection Object
+     *
      * @throws SQLException if DB wasn't found
+     *
      * @see #DB_URL
      */
     private Connection getConnection() throws SQLException {
@@ -22,23 +28,26 @@ public class EquationRepository_impl implements EquationRepository {
 
     /**
      * Uses URL of DB file by default = "jdbc:sqlite:Data.db"
+     *
      * @see #DB_URL
      */
-    public EquationRepository_impl(){
+    public EquationRepository_sqlite(){
         createTableIfNotExists();
     }
 
     /**
      * @param dbUrl set as default DB URL
+     *
      * @see #DB_URL
      */
-    public EquationRepository_impl(String dbUrl){
+    public EquationRepository_sqlite(String dbUrl){
         DB_URL = dbUrl;
         createTableIfNotExists();
     }
 
     /**
      * Creates DB file if not exists and table "equations" to keep equations and results
+     *
      * @see #DB_URL
      */
     private void createTableIfNotExists(){
@@ -57,7 +66,9 @@ public class EquationRepository_impl implements EquationRepository {
     }
 
     /**
-     * @return list of equations from DB or empty list if DB wasn't found
+     * @return list of equations from DB
+     * empty list if DB wasn't found
+     *
      * @see #DB_URL
      */
     @Override
@@ -65,7 +76,7 @@ public class EquationRepository_impl implements EquationRepository {
         ArrayList<Equation> equations = new ArrayList<>();
         String sql = "SELECT * FROM equations;";
         try (Connection connection = getConnection();
-            Statement statement = connection.createStatement();
+             Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)){
             while (resultSet.next()){
                 Equation equation = new Equation();
@@ -83,8 +94,10 @@ public class EquationRepository_impl implements EquationRepository {
 
     /**
      * @param id of equation who need to search
-     * @return equation from db with this id. null if equation with this id not found in DB
-     * or DB wasn't found
+     *
+     * @return equation from db with this id
+     * null if equation with this id not found in DB or DB wasn't found
+     *
      * @see #DB_URL
      */
     @Override
@@ -110,9 +123,45 @@ public class EquationRepository_impl implements EquationRepository {
     }
 
     /**
+     * @param condition of search (<, <=, =, >=, >)
+     *
+     * @param result number for compare by condition of search with equations results
+     *
+     * @return list of equations that match the search terms
+     * empty list if DB wasn't found
+     *
+     * @see #DB_URL
+     */
+    public ArrayList<Equation>get(String condition, double result){
+        ArrayList<Equation>equations = new ArrayList<>();
+        String sql = "SELECT * FROM equations WHERE result " + condition + " " + result + ";";
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)){
+
+            while (resultSet.next()){
+                Equation equation = new Equation();
+                equation.setId(resultSet.getInt("id"));
+                equation.setEquation(resultSet.getString("equation"));
+                equation.setResult(resultSet.getDouble("result"));
+                equations.add(equation);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return equations;
+    }
+
+    /**
      * Adds new equation to DB
+     *
      * @param equation to add
-     * @return id of added equation or -1 if DB wasn't found
+     *
+     * @return id of added equation
+     * -1 if DB wasn't found
+     *
      * @see #DB_URL
      */
     @Override
@@ -138,9 +187,12 @@ public class EquationRepository_impl implements EquationRepository {
 
     /**
      * Changes equation from DB with id of equation from @param
+     *
      * @param equation to change
-     * @return true if equation was changed. false if equation with this id wasn't found
-     * or DB wasn't found
+     *
+     * @return true if equation was changed
+     * false if equation with this id wasn't found or DB wasn't found
+     *
      * @see #DB_URL
      */
     @Override
@@ -163,9 +215,12 @@ public class EquationRepository_impl implements EquationRepository {
 
     /**
      * Removes equation with this id from DB
+     *
      * @param id of equation who need to removed
-     * @return true if equation was removed. false if equation with this id wasn't found
-     * or DB wasn't found
+     *
+     * @return true if equation was removed
+     * false if equation with this id wasn't found or DB wasn't found
+     *
      * @see #DB_URL
      */
     @Override

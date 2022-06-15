@@ -2,12 +2,17 @@ package service;
 
 import java.util.ArrayList;
 
+/**
+ * The class needed to get the result of equation string
+ * @see #calculate(String equation)
+ */
 public class MathParser {
 
     /**
      * Checks the equation for the absence of incorrect characters and incorrect combinations of characters
      *
      * @param equation to be tested
+     *
      * @return true if equation can be calculated by {@link #calculate(String)}
      */
     public static boolean equationIsCorrect(String equation){
@@ -61,9 +66,12 @@ public class MathParser {
      * Can identify symbols '+', '-', '*', '/'
      * Can identify integers and doubles (doubles with dots and commas)
      * Can identify nesting levels created by symbols '(', ')'
+     *
      * @param equation to calculate
      *
-     * @return String with result in double. null if equation == null or if equation has incorrect characters
+     * @return String with result in double
+     * null if equation == null or if equation has incorrect characters
+     *
      * Can be transformed to double
      * @see Double#parseDouble(String)
      * @see #equationIsCorrect(String)
@@ -98,7 +106,9 @@ public class MathParser {
      * Calculates the result of an equation without nesting level
      *
      * @param equation without parentheses
-     * @return result of equation (double in String) or null if equation == null
+     *
+     * @return result of equation (double in String)
+     * null if equation == null
      *
      * @throws NumberFormatException if there are incorrect characters in the equation
      */
@@ -112,9 +122,11 @@ public class MathParser {
      * @see #parseDouble(String)
      *
      * @param equation before transformation
-     * @return String without spaces and with dots instead of commas or null if equation == null
+     *
+     * @return String without spaces and with dots instead of commas
+     * null if equation == null
      */
-    private static String prepare(String equation){
+    public static String prepare(String equation){
         if (equation != null) {
             char[] chars = equation.toCharArray();
             ArrayList<Character> result = new ArrayList<>();
@@ -141,7 +153,8 @@ public class MathParser {
      *
      * @param equation MUST! be after {@link #prepare(String)}
      *
-     * @return equation after priority actions or null if equation == null
+     * @return equation after priority actions
+     * null if equation == null
      *
      * @throws NumberFormatException if there are incorrect characters in the equation
      */
@@ -210,9 +223,10 @@ public class MathParser {
      * The method performs secondary actions like "+" and "-"
      *
      * @param equation MUST! be after {@link #prepare(String)}
-     * For the correct solution of the equation? it is necessary to perform after {@link #priorityActions(String)}
+     * For the correct solution of the equation it is necessary to perform after {@link #priorityActions(String)}
      *
-     * @return equation after secondary actions or null if equation == null
+     * @return equation after secondary actions
+     * null if equation == null
      *
      * @throws NumberFormatException if there are incorrect characters in the equation
      */

@@ -2,17 +2,21 @@ package service;
 
 import model.Equation;
 import repository.EquationRepository;
-import repository.EquationRepository_impl;
+import repository.EquationRepository_sqlite;
 
 import java.util.ArrayList;
 
+/**
+ * Implementation of {@link EquationService} by using {@link EquationRepository} to storage of equation
+ */
 public class EquationService_impl implements EquationService {
-    private final EquationRepository repository = new EquationRepository_impl();
+    private final EquationRepository repository = new EquationRepository_sqlite();
 
     /**
      * @return list of equations from repository
+     *
      * @see EquationRepository#getAll()
-     * @see EquationRepository_impl#getAll() 
+     * @see EquationRepository_sqlite#getAll()
      */
     @Override
     public ArrayList<Equation> getAll() {
@@ -21,9 +25,12 @@ public class EquationService_impl implements EquationService {
 
     /**
      * @param id of equation who need to search in repository
-     * @return equation with this id from repository or null if equation with this id not found
+     *
+     * @return equation with this id from repository
+     * null if equation with this id not found
+     *
      * @see EquationRepository#get(int)
-     * @see EquationRepository_impl#get(int) 
+     * @see EquationRepository_sqlite#get(int)
      */
     @Override
     public Equation get(int id) {
@@ -31,11 +38,30 @@ public class EquationService_impl implements EquationService {
     }
 
     /**
+     * @param condition of search (<, <=, =, >=, >)
+     *
+     * @param result number for compare by condition of search with equations results
+     *
+     * @return list of equations that match the search terms
+     *
+     * @see EquationRepository#get(String, double)
+     * @see EquationRepository_sqlite#get(String, double)
+     */
+    @Override
+    public ArrayList<Equation> get(String condition, double result) {
+        return repository.get(condition, result);
+    }
+
+    /**
      * Changes equation with id of equation from @param
+     *
      * @param equation to change
-     * @return true if equation was changed or false if not
+     *
+     * @return true if equation was changed
+     * false if not
+     *
      * @see EquationRepository#set(Equation)
-     * @see EquationRepository_impl#set(Equation) 
+     * @see EquationRepository_sqlite#set(Equation)
      */
     @Override
     public boolean set(Equation equation) {
@@ -44,10 +70,14 @@ public class EquationService_impl implements EquationService {
 
     /**
      * Adds new equation
+     *
      * @param equation to add
-     * @return id of added equation or -1 if equation wasn't added
+     *
+     * @return id of added equation
+     * -1 if equation wasn't added
+     *
      * @see EquationRepository#add(Equation)
-     * @see EquationRepository_impl#add(Equation) 
+     * @see EquationRepository_sqlite#add(Equation)
      */
     @Override
     public int add(Equation equation) {
@@ -56,10 +86,14 @@ public class EquationService_impl implements EquationService {
 
     /**
      * Removes equation with this id
+     *
      * @param id of equation who need to removed
-     * @return true if equation was removed or false if not
+     *
+     * @return true if equation was removed
+     * false if not
+     *
      * @see EquationRepository#remove(int)
-     * @see EquationRepository_impl#remove(int)
+     * @see EquationRepository_sqlite#remove(int)
      */
     @Override
     public boolean remove(int id) {

@@ -2,6 +2,7 @@ package ui.mainScreen;
 
 import model.Equation;
 import ui.equationInfo.EquationInfoDialog;
+import ui.equationSearch.EquationSearchDialog;
 import ui.model.DefaultButton;
 
 import javax.swing.*;
@@ -9,6 +10,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Buttons panel of main window
+ *
+ * @see MainScreen
+ */
 public class ButtonsPanel extends JPanel {
     private static final String ADD = "Add";
     private static final String CHANGE = "Change";
@@ -21,7 +27,8 @@ public class ButtonsPanel extends JPanel {
 
     private final MainScreen owner;
 
-    private final JButton btn_add, btn_change, btn_remove, btn_search;
+    private final JButton btn_add, btn_change, btn_remove;
+    public final JButton btn_search;
 
     public ButtonsPanel(MainScreen owner){
         super(new GridBagLayout());
@@ -37,6 +44,9 @@ public class ButtonsPanel extends JPanel {
         setReactions();
     }
 
+    /**
+     * Sets up content of panel
+     */
     private void build(){
         this.add(btn_search, new Cell(0,0));
         this.add(btn_add, new Cell(1,0));
@@ -44,6 +54,9 @@ public class ButtonsPanel extends JPanel {
         this.add(btn_change, new Cell(1,1));
     }
 
+    /**
+     * Assign reactions to user actions to buttons in the panel
+     */
     private void setReactions(){
         btn_change.addActionListener(clickChange);
         btn_search.addActionListener(clickSearch);
@@ -75,8 +88,15 @@ public class ButtonsPanel extends JPanel {
         }
     };
 
-    private final ActionListener clickSearch = e -> {
-
+    private final ActionListener clickSearch = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (owner.searchOn) {
+                owner.searchOff();
+            } else {
+                EventQueue.invokeLater(() -> new EquationSearchDialog(owner).setVisible(true));
+            }
+        }
     };
 
     private final ActionListener clickChange = new ActionListener() {
