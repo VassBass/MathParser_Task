@@ -139,7 +139,9 @@ public class MainScreen extends JFrame {
     public void searchOff(){
         searchOn = false;
         buttonsPanel.btn_search.setText(SEARCH);
-        mainTable.setList(service.getAll());
+        list.clear();
+        list.addAll(service.getAll());
+        mainTable.setList(list);
     }
 
     /**
@@ -155,7 +157,9 @@ public class MainScreen extends JFrame {
     public void searchEquations(String condition, double result){
         searchOn = true;
         buttonsPanel.btn_search.setText(SEARCH_OFF);
-        mainTable.setList(service.get(condition, result));
+        list.clear();
+        list.addAll(service.get(condition, result));
+        mainTable.setList(list);
     }
 
     /**
