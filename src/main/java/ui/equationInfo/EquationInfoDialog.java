@@ -2,6 +2,7 @@ package ui.equationInfo;
 
 import model.Equation;
 import service.MathParser;
+import service.MathParserService;
 import ui.Location;
 import ui.mainScreen.MainScreen;
 import ui.model.DefaultButton;

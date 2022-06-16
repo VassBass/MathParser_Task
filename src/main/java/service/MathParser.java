@@ -5,10 +5,10 @@ import java.util.ArrayList;
 /**
  * The implementation of MathParserServise needed to get the result of equation string
  *
- * @see MathParserServise
+ * @see MathParserService
  * @see #calculate(String equation)
  */
-public class MathParser implements MatchParserServise {
+public class MathParser implements MathParserService {
 
     /**
      * Calculates the number of numbers in an equation
