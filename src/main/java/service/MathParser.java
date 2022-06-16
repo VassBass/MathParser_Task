@@ -3,10 +3,12 @@ package service;
 import java.util.ArrayList;
 
 /**
- * The class needed to get the result of equation string
+ * The implementation of MathParserServise needed to get the result of equation string
+ *
+ * @see MathParserServise
  * @see #calculate(String equation)
  */
-public class MathParser {
+public class MathParser implements MatchParserServise {
 
     /**
      * Calculates the number of numbers in an equation
@@ -16,6 +18,7 @@ public class MathParser {
      * @return number of numbers in an equation
      * 0 if equation == null or equation has incorrect characters
      */
+    @Override
     public static int numberOfNumbers(String equation){
         if (!equationIsCorrect(equation)){
             return 0;
@@ -36,6 +39,7 @@ public class MathParser {
         }
         return result;
     }
+
     /**
      * Checks the equation for the absence of incorrect characters and incorrect combinations of characters
      *
@@ -43,6 +47,7 @@ public class MathParser {
      *
      * @return true if equation can be calculated by {@link #calculate(String)}
      */
+    @Override
     public static boolean equationIsCorrect(String equation){
         if (equation == null) return false;
 
@@ -114,6 +119,7 @@ public class MathParser {
      * @see Double#parseDouble(String)
      * @see #equationIsCorrect(String)
      */
+    @Override
     public static String calculate(String equation){
         if (equation == null){
             return null;
