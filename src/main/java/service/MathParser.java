@@ -19,7 +19,7 @@ public class MathParser implements MatchParserServise {
      * 0 if equation == null or equation has incorrect characters
      */
     @Override
-    public static int numberOfNumbers(String equation){
+    public int numberOfNumbers(String equation){
         if (!equationIsCorrect(equation)){
             return 0;
         }else equation = prepare(equation);
@@ -48,7 +48,7 @@ public class MathParser implements MatchParserServise {
      * @return true if equation can be calculated by {@link #calculate(String)}
      */
     @Override
-    public static boolean equationIsCorrect(String equation){
+    public boolean equationIsCorrect(String equation){
         if (equation == null) return false;
 
         equation = prepare(equation);
@@ -120,7 +120,7 @@ public class MathParser implements MatchParserServise {
      * @see #equationIsCorrect(String)
      */
     @Override
-    public static String calculate(String equation){
+    public String calculate(String equation){
         if (equation == null){
             return null;
         }else equation = prepare(equation);
@@ -157,7 +157,7 @@ public class MathParser implements MatchParserServise {
      *
      * @throws NumberFormatException if there are incorrect characters in the equation
      */
-    private static String parseDouble(String equation){
+    private String parseDouble(String equation){
         return equation == null ? null : secondaryActions(priorityActions(prepare(equation)));
     }
 
@@ -171,7 +171,7 @@ public class MathParser implements MatchParserServise {
      * @return String without spaces and with dots instead of commas
      * null if equation == null
      */
-    private static String prepare(String equation){
+    private String prepare(String equation){
         if (equation != null) {
             char[] chars = equation.toCharArray();
             ArrayList<Character> result = new ArrayList<>();
@@ -210,7 +210,7 @@ public class MathParser implements MatchParserServise {
      *
      * @throws NumberFormatException if there are incorrect characters in the equation
      */
-    private static String priorityActions(String equation){
+    private String priorityActions(String equation){
         if (equation != null) {
             char[]chars = equation.toCharArray();
 
@@ -282,7 +282,7 @@ public class MathParser implements MatchParserServise {
      *
      * @throws NumberFormatException if there are incorrect characters in the equation
      */
-    private static String secondaryActions(String equation){
+    private String secondaryActions(String equation){
         if (equation != null) {
             char[]chars = equation.toCharArray();
 
