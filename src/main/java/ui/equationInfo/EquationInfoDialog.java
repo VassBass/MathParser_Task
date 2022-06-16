@@ -110,7 +110,7 @@ public class EquationInfoDialog extends JDialog {
             String message = "Field of equation can't be empty!";
             JOptionPane.showMessageDialog(EquationInfoDialog.this,message,OOPS,JOptionPane.ERROR_MESSAGE);
         }else if (!MathParser.equationIsCorrect(txt_equation.getText())){
-            String message = "Check attentively equation for incorrect symbols, missing or redundant symbols and parentheses";
+            String message = "Check attentively equation for incorrect actions or symbols, missing or redundant symbols and parentheses";
             JOptionPane.showMessageDialog(EquationInfoDialog.this,message,OOPS,JOptionPane.ERROR_MESSAGE);
         }else {
             txt_result.setText(MathParser.calculate(txt_equation.getText()));

@@ -1,6 +1,5 @@
 package ui.equationSearch;
 
-import service.MathParser;
 import ui.Location;
 import ui.mainScreen.MainScreen;
 import ui.model.DefaultButton;
@@ -87,9 +86,8 @@ public class EquationSearchDialog extends JDialog {
                 String message = "Field of result can't be empty!";
                 JOptionPane.showMessageDialog(EquationSearchDialog.this, message, OOPS, JOptionPane.ERROR_MESSAGE);
             } else {
-                String number = MathParser.prepare(txt_number.getText());
                 try {
-                    double num = Double.parseDouble(number);
+                    double num = Double.parseDouble(txt_number.getText());
                     if (comboBox_condition.getSelectedItem() != null) {
                         dispose();
                         mainScreen.searchEquations(comboBox_condition.getSelectedItem().toString(), num);

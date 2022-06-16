@@ -9,6 +9,34 @@ import java.util.ArrayList;
 public class MathParser {
 
     /**
+     * Calculates the number of numbers in an equation
+     *
+     * @param equation to be tested
+     *
+     * @return number of numbers in an equation
+     * 0 if equation == null or equation has incorrect characters
+     */
+    public static int numberOfNumbers(String equation){
+        if (!equationIsCorrect(equation)){
+            return 0;
+        }else equation = prepare(equation);
+
+        boolean numberStarted = false;
+        int result = 0;
+        char[] chars = equation.toCharArray();
+        for (char c : chars){
+            if (Character.isDigit(c)){
+                if (!numberStarted) {
+                    result++;
+                    numberStarted = true;
+                }
+            }else if (c != '.'){
+                numberStarted = false;
+            }
+        }
+        return result;
+    }
+    /**
      * Checks the equation for the absence of incorrect characters and incorrect combinations of characters
      *
      * @param equation to be tested
@@ -22,40 +50,50 @@ public class MathParser {
         char[]chars = equation.toCharArray();
         boolean dotHasAlreadyBeen = false;
         int openParentheses = 0;
-        for (int index = 0;index < chars.length;index++){
-            if (Character.isLetter(chars[index])){
-                return false;
-            }else if (chars[index] == '.'){
-                if (!Character.isDigit(chars[index-1]) && !Character.isDigit(chars[index+1])){
+        try {
+            for (int index = 0; index < chars.length; index++) {
+                if (Character.isLetter(chars[index])) {
                     return false;
-                }else if (dotHasAlreadyBeen){
-                    return false;
-                }else {
-                    dotHasAlreadyBeen = true;
-                }
-            }else if (chars[index] == '+' || chars[index] == '*' || chars[index] == '/'){
-                if (chars[index+1] == '-'){
-                    if (!Character.isDigit(chars[index+2])) return false;
-                }
+                } else if (chars[index] == '.') {
+                    if (!Character.isDigit(chars[index - 1]) || !Character.isDigit(chars[index + 1])) {
+                        return false;
+                    } else if (dotHasAlreadyBeen) {
+                        return false;
+                    } else {
+                        dotHasAlreadyBeen = true;
+                    }
+                } else if (chars[index] == '+' || chars[index] == '*' || chars[index] == '/') {
+                    if (chars[index + 1] == '-') {
+                        if (!Character.isDigit(chars[index + 2])) return false;
+                    } else if (chars[index + 1] == '+' || chars[index + 1] == '*' || chars[index + 1] == '/') {
+                        return false;
+                    } else if (chars[index] == '/' && chars[index + 1] == '0' && chars[index + 2] != '.') {
+                        return false;
+                    }
 
-                dotHasAlreadyBeen = false;
-            }else if (chars[index] == '-'){
-                if (!Character.isDigit(chars[index+1])){
-                    if (chars[index+1] == '-' && !Character.isDigit(chars[index+2])) return false;
-                    if (chars[index+1] == ')') return false;
+                    dotHasAlreadyBeen = false;
+                } else if (chars[index] == '-') {
+                    if (!Character.isDigit(chars[index + 1])) {
+                        if (chars[index + 1] != '-' && chars[index + 1] != '(') return false;
+                        if (chars[index + 1] == '-' && !Character.isDigit(chars[index + 2])) return false;
+                        if (chars[index + 1] == ')') return false;
+                    }
+
+                    dotHasAlreadyBeen = false;
+                } else if (chars[index] == '(') {
+                    if (index > 0 && Character.isDigit(chars[index - 1])) return false;
+                    if (index > 0 && chars[index-1] == ')') return false;
+
+                    openParentheses++;
+                    dotHasAlreadyBeen = false;
+                } else if (chars[index] == ')') {
+                    if (openParentheses == 0) return false;
+                    openParentheses--;
+                    dotHasAlreadyBeen = false;
                 }
-
-                dotHasAlreadyBeen = false;
-            }else if (chars[index] == '('){
-                if (Character.isDigit(chars[index-1])) return false;
-
-                openParentheses++;
-                dotHasAlreadyBeen = false;
-            }else if (chars[index] == ')'){
-                if (openParentheses == 0) return false;
-                openParentheses--;
-                dotHasAlreadyBeen = false;
             }
+        }catch (IndexOutOfBoundsException e){
+            return false;
         }
 
         return openParentheses == 0;
@@ -80,6 +118,7 @@ public class MathParser {
         if (equation == null){
             return null;
         }else equation = prepare(equation);
+
         if (equationIsCorrect(equation)){
             char[]chars = equation.toCharArray();
             int left = -1;
@@ -118,7 +157,7 @@ public class MathParser {
 
     /**
      * This method removes from String all spaces and replaces commas to dots
-     * if the first character in the equation is '+' it will be removed
+     * if the first characters in the equation is '+' they will be removed
      * @see #parseDouble(String)
      *
      * @param equation before transformation
@@ -126,16 +165,23 @@ public class MathParser {
      * @return String without spaces and with dots instead of commas
      * null if equation == null
      */
-    public static String prepare(String equation){
+    private static String prepare(String equation){
         if (equation != null) {
             char[] chars = equation.toCharArray();
             ArrayList<Character> result = new ArrayList<>();
             for (int index = 0;index < chars.length; index++) {
-                if (result.size() == 0 && chars[index] == '+') {
-                    chars[index] = ' ';
-                    --index;
+                if (chars[index] == '+') {
+                    if (result.size() == 0 || (index > 0 && chars[index-1] == '(')) {
+                        chars[index] = ' ';
+                        --index;
+                    }
                 }else if (chars[index] == ',') {
                     result.add('.');
+                }else if (chars[index] == '(' && index > 0){
+                    if (Character.isDigit(chars[index-1]) || chars[index-1] == ')'){
+                        result.add('*');
+                    }
+                    result.add(chars[index]);
                 } else if (chars[index] != ' ') {
                     result.add(chars[index]);
                 }
