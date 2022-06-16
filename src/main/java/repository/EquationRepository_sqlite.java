@@ -128,27 +128,33 @@ public class EquationRepository_sqlite implements EquationRepository {
      * @param result number for compare by condition of search with equations results
      *
      * @return list of equations that match the search terms
-     * empty list if DB wasn't found
+     * empty list if condition == null, if condition has incorrect characters or DB wasn't found
      *
      * @see #DB_URL
      */
     public ArrayList<Equation>get(String condition, double result){
         ArrayList<Equation>equations = new ArrayList<>();
-        String sql = "SELECT * FROM equations WHERE result " + condition + " " + result + ";";
-        try (Connection connection = getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)){
 
-            while (resultSet.next()){
-                Equation equation = new Equation();
-                equation.setId(resultSet.getInt("id"));
-                equation.setEquation(resultSet.getString("equation"));
-                equation.setResult(resultSet.getDouble("result"));
-                equations.add(equation);
+        if (condition != null) {
+            if (condition.equals("<") || condition.equals("<=") || condition.equals("=")
+                    || condition.equals(">=") || condition.equals(">")) {
+                String sql = "SELECT * FROM equations WHERE result " + condition + " " + result + ";";
+                try (Connection connection = getConnection();
+                     Statement statement = connection.createStatement();
+                     ResultSet resultSet = statement.executeQuery(sql)) {
+
+                    while (resultSet.next()) {
+                        Equation equation = new Equation();
+                        equation.setId(resultSet.getInt("id"));
+                        equation.setEquation(resultSet.getString("equation"));
+                        equation.setResult(resultSet.getDouble("result"));
+                        equations.add(equation);
+                    }
+
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
         }
 
         return equations;
@@ -159,30 +165,30 @@ public class EquationRepository_sqlite implements EquationRepository {
      *
      * @param equation to add
      *
-     * @return id of added equation
-     * -1 if DB wasn't found
+     * @return true if equation was added
+     * false if DB wasn't found
      *
      * @see #DB_URL
      */
     @Override
-    public int add(Equation equation) {
+    public boolean add(Equation equation) {
+        if (equation == null) return false;
+
         String sql = "INSERT INTO equations (equation, result)"
-                + "VALUES (?,?);";
+                + "VALUES ("
+                + "'" + equation.getEquation() + "'"
+                + ", " + equation.getResult()
+                + ");";
 
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)){
+             Statement statement = connection.createStatement()){
 
-            statement.setString(1, equation.getEquation());
-            statement.setDouble(2, equation.getResult());
-
-            statement.execute();
-            try (ResultSet resultSet = statement.getGeneratedKeys()){
-                if (resultSet.next()) return resultSet.getInt(1);
-            }
+            int result = statement.executeUpdate(sql);
+            return result != 0;
         } catch (SQLException ex) {
             ex.printStackTrace();
+            return false;
         }
-        return -1;
     }
 
     /**
@@ -191,12 +197,14 @@ public class EquationRepository_sqlite implements EquationRepository {
      * @param equation to change
      *
      * @return true if equation was changed
-     * false if equation with this id wasn't found or DB wasn't found
+     * false if @param == null, if equation with this id wasn't found or DB wasn't found
      *
      * @see #DB_URL
      */
     @Override
     public boolean set(Equation equation) {
+        if (equation == null) return false;
+
         String sql = "UPDATE equations SET "
                 + "equation = '" + equation.getEquation() + "'"
                 + ", result = " + equation.getResult()
@@ -204,8 +212,8 @@ public class EquationRepository_sqlite implements EquationRepository {
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement()){
 
-            statement.execute(sql);
-            return true;
+            int result = statement.executeUpdate(sql);
+            return result != 0;
 
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -229,9 +237,8 @@ public class EquationRepository_sqlite implements EquationRepository {
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement()){
 
-            statement.execute(sql);
-            return true;
-
+            int result = statement.executeUpdate(sql);
+            return result != 0;
         } catch (SQLException ex) {
             ex.printStackTrace();
             return false;

@@ -34,6 +34,7 @@ public interface EquationRepository {
      * @param result number for compare by condition of search with equations results
      *
      * @return list of equations that match the search terms
+     * empty list if condition == null or if condition has incorrect characters
      *
      * @see EquationRepository_sqlite#get(String, double)
      */
@@ -44,12 +45,12 @@ public interface EquationRepository {
      *
      * @param equation to add
      *
-     * @return id of added equation
-     * -1 if equation wasn't added
+     * @return true if equation was added
+     * false if wasn't
      *
      * @see EquationRepository_sqlite#add(Equation)
      */
-    int add(Equation equation);
+    boolean add(Equation equation);
 
     /**
      * Changes equation with id of equation from @param

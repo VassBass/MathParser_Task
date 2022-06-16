@@ -20,6 +20,8 @@ public class MainScreen extends JFrame {
     private static final String SEARCH = "Search";
     private static final String SEARCH_OFF = "Search off";
 
+    private static final String ERROR_MESSAGE = "Something go wrong! Please try again.";
+
     private final EquationService service = new EquationService_impl();
 
     private final ArrayList<Equation>list;
@@ -73,70 +75,64 @@ public class MainScreen extends JFrame {
         return selected >= 0 && selected < list.size() ? list.get(selected) : null;
     }
 
-    public void addEquation(Equation equation){
-        if (equation != null) {
-            int id = service.add(equation);
-            if (id >= 0) {
-                equation.setId(id);
-                list.add(equation);
-                mainTable.setList(list);
-            }else {
-                String message = "Error with DB, please try again";
-                JOptionPane.showMessageDialog(this,message,OOPS, JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
-
     /**
-     * Removes the equation with @param from the {@link #list} and sends the command to {@link #service}
-     *
-     * @param id of equation that need to remove
-     *
-     * @see EquationService#remove(int id)
-     */
-    public void removeEquation(int id){
-        if (id >= 0) {
-            service.remove(id);
-            for (int index = 0; index < list.size(); index++) {
-                Equation e = list.get(index);
-                if (e.getId() == id) {
-                    list.remove(index);
-                    break;
-                }
-            }
-            mainTable.setList(list);
-        }
-    }
-
-    /**
-     * Changes equation from {@link #list} with id of equation from @param
-     * and sends the command to {@link #service}
+     * Sends the command 'add' to {@link #service} and resets list in {@link #mainTable}
+     * if @param == null or {@link EquationService#add(Equation)} returns false - show error dialog
      *
      * @param equation to change
      *
      * @see EquationService#set(Equation)
+     * @see #resetList()
      */
-    public void setEquation(Equation equation){
-        if (equation != null) {
-            service.set(equation);
-            for (Equation e : list) {
-                if (e.getId() == equation.getId()) {
-                    e.setEquation(equation.getEquation());
-                    e.setResult(equation.getResult());
-                    break;
-                }
-            }
+    public void addEquation(Equation equation){
+        if (equation != null && service.add(equation)) {
+            resetList();
+        }else {
+            JOptionPane.showMessageDialog(this, ERROR_MESSAGE, OOPS, JOptionPane.ERROR_MESSAGE);
         }
-        mainTable.setList(list);
     }
 
     /**
-     * Makes search off and show full list of equations
+     * Sends the command 'remove' to {@link #service} and resets list in {@link #mainTable}
+     * if @param < 0 or {@link EquationService#remove(int)} returns false - show error dialog
+     *
+     * @param id of equation that need to remove
+     *
+     * @see EquationService#remove(int id)
+     * @see #resetList()
+     */
+    public void removeEquation(int id){
+        if (id >= 0 && service.remove(id)) {
+            resetList();
+        }else {
+            JOptionPane.showMessageDialog(this, ERROR_MESSAGE, OOPS, JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * Sends the command 'set' to {@link #service} and resets list in {@link #mainTable}
+     * if @param == null or {@link EquationService#set(Equation)} returns false - show error dialog
+     *
+     * @param equation to change
+     *
+     * @see EquationService#set(Equation)
+     * @see #resetList()
+     */
+    public void setEquation(Equation equation){
+        if (equation != null && service.set(equation)) {
+            resetList();
+        }else {
+            JOptionPane.showMessageDialog(this, ERROR_MESSAGE, OOPS, JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * Makes search off and resets list in table
      *
      * @see EquationService#getAll()
      * @see #searchEquations(String, double)
      */
-    public void searchOff(){
+    public void resetList(){
         searchOn = false;
         buttonsPanel.btn_search.setText(SEARCH);
         list.clear();
@@ -152,7 +148,7 @@ public class MainScreen extends JFrame {
      * @param result for search
      *
      * @see EquationService#get(String condition, double result)
-     * @see #searchOff()
+     * @see #resetList() ()
      */
     public void searchEquations(String condition, double result){
         searchOn = true;

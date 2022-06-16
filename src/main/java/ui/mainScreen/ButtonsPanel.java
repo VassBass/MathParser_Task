@@ -92,7 +92,7 @@ public class ButtonsPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (owner.searchOn) {
-                owner.searchOff();
+                owner.resetList();
             } else {
                 EventQueue.invokeLater(() -> new EquationSearchDialog(owner).setVisible(true));
             }

@@ -51,6 +51,7 @@ public class EquationService_impl implements EquationService {
      * @param result number for compare by condition of search with equations results
      *
      * @return list of equations that match the search terms
+     * empty list if condition == null or if condition has incorrect characters
      *
      * @see EquationRepository#get(String, double)
      * @see EquationRepository_sqlite#get(String, double)
@@ -81,14 +82,14 @@ public class EquationService_impl implements EquationService {
      *
      * @param equation to add
      *
-     * @return id of added equation
-     * -1 if equation wasn't added
+     * @return true if equation was added
+     * false if wasn't
      *
      * @see EquationRepository#add(Equation)
      * @see EquationRepository_sqlite#add(Equation)
      */
     @Override
-    public int add(Equation equation) {
+    public boolean add(Equation equation) {
         return repository.add(equation);
     }
 

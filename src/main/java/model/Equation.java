@@ -45,8 +45,9 @@ public class Equation {
         if (obj == this) return true;
 
         Equation o = (Equation) obj;
-        return o.getEquation().equals(this.equation)
-                && o.getResult() == this.getResult();
+        return o.getId() == this.id
+                && o.getEquation().equals(this.equation)
+                && o.getResult() == this.result;
     }
 
     /**
