@@ -35,6 +35,8 @@ public class EquationInfoDialog extends JDialog {
     private static final String ADD_TOOLTIP = "Before add/change you must calculate equation";
     private static final String EQUATION_TOOLTIP = "Use numbers and symbols + - * / ( )";
 
+    private final MathParserService mathParser = new MathParser();
+
     private final MainScreen mainScreen;
     private final Equation equation;
 
@@ -109,11 +111,11 @@ public class EquationInfoDialog extends JDialog {
         if (txt_equation.getText().length() == 0){
             String message = "Field of equation can't be empty!";
             JOptionPane.showMessageDialog(EquationInfoDialog.this,message,OOPS,JOptionPane.ERROR_MESSAGE);
-        }else if (!MathParser.equationIsCorrect(txt_equation.getText())){
+        }else if (!mathParser.equationIsCorrect(txt_equation.getText())){
             String message = "Check attentively equation for incorrect actions or symbols, missing or redundant symbols and parentheses";
             JOptionPane.showMessageDialog(EquationInfoDialog.this,message,OOPS,JOptionPane.ERROR_MESSAGE);
         }else {
-            txt_result.setText(MathParser.calculate(txt_equation.getText()));
+            txt_result.setText(mathParser.calculate(txt_equation.getText()));
             btn_add.setEnabled(true);
         }
     };
