@@ -2,7 +2,7 @@ package service;
 
 import model.Equation;
 import repository.EquationRepository;
-import repository.EquationRepository_sqlite;
+import repository.EquationRepository_sql;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,7 @@ public interface EquationService {
      *
      * @see EquationService_impl#getAll()
      * @see EquationRepository#getAll()
-     * @see EquationRepository_sqlite#getAll()
+     * @see EquationRepository_sql#getAll()
      */
     ArrayList<Equation>getAll();
 
@@ -29,7 +29,7 @@ public interface EquationService {
      *
      * @see EquationService_impl#get(int)
      * @see EquationRepository#get(int) 
-     * @see EquationRepository_sqlite#get(int)
+     * @see EquationRepository_sql#get(int)
      */
     Equation get(int id);
 
@@ -43,7 +43,7 @@ public interface EquationService {
      *
      * @see EquationService_impl#get(String, double)
      * @see EquationRepository#get(String, double)
-     * @see EquationRepository_sqlite#get(String, double)
+     * @see EquationRepository_sql#get(String, double)
      */
     ArrayList<Equation>get(String condition, double result);
 
@@ -57,7 +57,7 @@ public interface EquationService {
      *
      * @see EquationService_impl#set(Equation)
      * @see EquationRepository#set(Equation)
-     * @see EquationRepository_sqlite#set(Equation)
+     * @see EquationRepository_sql#set(Equation)
      */
     boolean set(Equation equation);
 
@@ -72,7 +72,7 @@ public interface EquationService {
      *
      * @see EquationService_impl#add(Equation)
      * @see EquationRepository#add(Equation)
-     * @see EquationRepository_sqlite#add(Equation)
+     * @see EquationRepository_sql#add(Equation)
      */
     boolean add(Equation equation);
 
@@ -86,7 +86,7 @@ public interface EquationService {
      *
      * @see EquationService_impl#remove(int)
      * @see EquationRepository#remove(int)
-     * @see EquationRepository_sqlite#remove(int)
+     * @see EquationRepository_sql#remove(int)
      */
     boolean remove(int id);
 }

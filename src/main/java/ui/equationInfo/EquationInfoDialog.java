@@ -1,6 +1,8 @@
 package ui.equationInfo;
 
 import model.Equation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import service.MathParser;
 import service.MathParserService;
 import ui.Location;
@@ -23,6 +25,8 @@ import java.awt.event.ActionListener;
  *
  */
 public class EquationInfoDialog extends JDialog {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EquationInfoDialog.class);
+
     private static final String TITLE = "Equation Info";
     private static final String EQUATION = "Equation";
     private static final String RESULT = "Result";
@@ -52,6 +56,12 @@ public class EquationInfoDialog extends JDialog {
         createElements();
         build();
         setReactions();
+
+        LOGGER.debug("""
+                        Dialog was created successful with params:
+                        MainScreen = {}
+                        Equation = {}""",
+                mainScreen, equation);
     }
 
     /**
@@ -106,24 +116,57 @@ public class EquationInfoDialog extends JDialog {
         txt_equation.getDocument().addDocumentListener(changeEquation);
     }
 
+    @Override
+    public void dispose() {
+        super.dispose();
+        LOGGER.debug("Dialog was dispose");
+    }
+
+    @Override
+    public void setVisible(boolean b) {
+        super.setVisible(b);
+        LOGGER.debug("Visibility of EquationInfoDialog was sets: {}", b);
+    }
+
     private final ActionListener clickCancel = e -> dispose();
 
     private final ActionListener clickCalculate = e -> {
-        if (txt_equation.getText().length() == 0){
+        LOGGER.info("btn_calculate was clicked");
+
+        String equation = txt_equation.getText();
+
+        LOGGER.debug("Equation text = {}", equation);
+
+        if (equation.length() == 0){
             String message = "Field of equation can't be empty!";
+
+            LOGGER.info(message);
+
             JOptionPane.showMessageDialog(EquationInfoDialog.this,message,OOPS,JOptionPane.ERROR_MESSAGE);
-        }else if (!mathParser.equationIsCorrect(txt_equation.getText())){
+        }else if (!mathParser.equationIsCorrect(equation)){
             String message = "Check attentively equation for incorrect actions or symbols, missing or redundant symbols and parentheses";
+
+            LOGGER.info(message);
+
             JOptionPane.showMessageDialog(EquationInfoDialog.this,message,OOPS,JOptionPane.ERROR_MESSAGE);
         }else {
-            txt_result.setText(mathParser.calculate(txt_equation.getText()));
+            String result = mathParser.calculate(equation);
+            txt_result.setText(result);
             btn_add.setEnabled(true);
+
+            LOGGER.info("""
+                    Equation = {}
+                    Result = {}
+                    Quantity of numbers = {}""",
+                    equation, result, mathParser.numberOfNumbers(equation));
         }
     };
 
     private final ActionListener clickAdd = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            LOGGER.info("btn_add was clicked");
+
             dispose();
             Equation newEquation = new Equation();
             newEquation.setEquation(txt_equation.getText());

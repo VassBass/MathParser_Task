@@ -1,6 +1,8 @@
 package ui.mainScreen;
 
 import model.Equation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import service.EquationService;
 import service.EquationService_impl;
 
@@ -15,6 +17,8 @@ import java.util.ArrayList;
  * @see ButtonsPanel
  */
 public class MainScreen extends JFrame {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MainScreen.class);
+
     private static final String TITLE = "MathParser";
     private static final String OOPS = "Oops!";
     private static final String SEARCH = "Search";
@@ -41,6 +45,14 @@ public class MainScreen extends JFrame {
 
         build();
         setReactions();
+
+        LOGGER.debug("MainScreen was created successful");
+    }
+
+    @Override
+    public void setVisible(boolean b) {
+        super.setVisible(b);
+        LOGGER.debug("Visibility of MainScreen was sets: {}", b);
     }
 
     /**

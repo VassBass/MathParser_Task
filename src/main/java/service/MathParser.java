@@ -1,14 +1,18 @@
 package service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 
 /**
- * The implementation of MathParserServise needed to get the result of equation string
+ * The implementation of MathParserService needed to get the result of equation string
  *
  * @see MathParserService
  * @see #calculate(String equation)
  */
 public class MathParser implements MathParserService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MathParser.class);
 
     /**
      * Calculates the number of numbers in an equation
@@ -20,9 +24,17 @@ public class MathParser implements MathParserService {
      */
     @Override
     public int numberOfNumbers(String equation){
+        LOGGER.debug("""
+                numberOfNumbers inputs:
+                equation = {}"""
+                , equation);
+
         if (!equationIsCorrect(equation)){
+            LOGGER.debug("Equation is not correct");
             return 0;
         }else equation = prepare(equation);
+
+        LOGGER.debug("Equation after prepare = {}", equation);
 
         boolean numberStarted = false;
         int result = 0;
@@ -37,6 +49,8 @@ public class MathParser implements MathParserService {
                 numberStarted = false;
             }
         }
+
+        LOGGER.debug("Equation has number of numbers = {}", result);
         return result;
     }
 
@@ -49,6 +63,11 @@ public class MathParser implements MathParserService {
      */
     @Override
     public boolean equationIsCorrect(String equation){
+        LOGGER.debug("""
+                equationIsCorrect inputs:
+                equation = {}"""
+                , equation);
+
         if (equation == null) return false;
 
         equation = prepare(equation);
@@ -121,6 +140,11 @@ public class MathParser implements MathParserService {
      */
     @Override
     public String calculate(String equation){
+        LOGGER.debug("""
+                calculate inputs:
+                equation = {}"""
+                , equation);
+
         if (equation == null){
             return null;
         }else equation = prepare(equation);

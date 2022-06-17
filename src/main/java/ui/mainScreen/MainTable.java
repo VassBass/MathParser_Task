@@ -1,6 +1,8 @@
 package ui.mainScreen;
 
 import model.Equation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -15,6 +17,8 @@ import java.util.Locale;
  * @see MainScreen
  */
 public class MainTable extends JTable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MainTable.class);
+
     private static final String EQUATION = "Equation";
     private static final String RESULT = "Result";
 
@@ -27,6 +31,8 @@ public class MainTable extends JTable {
         this.getTableHeader().setReorderingAllowed(false);
         this.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         this.getSelectionModel().addListSelectionListener(selected);
+
+        LOGGER.debug("MainTable of MainScreen was created successful");
     }
 
     public void setList(ArrayList<Equation>list){
@@ -34,6 +40,8 @@ public class MainTable extends JTable {
     }
 
     private static DefaultTableModel tableModel(ArrayList<Equation>list){
+        LOGGER.debug("Start of creating TableModel with equations list: {}", list);
+
         if (list == null) list = new ArrayList<>();
 
         DefaultTableModel model = new DefaultTableModel(){

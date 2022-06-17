@@ -4,7 +4,7 @@ import model.Equation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.sqlite.JDBC;
-import repository.EquationRepository_sqlite;
+import repository.EquationRepository_sql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EquationServiceTest {
     private static final String DB_URL = "jdbc:sqlite:testData.db";
-    private final EquationService service = new EquationService_impl(new EquationRepository_sqlite(DB_URL));
+    private final EquationService service = new EquationService_impl(new EquationRepository_sql(DB_URL, null, null));
 
     private static Equation equation1(){
         Equation e = new Equation();

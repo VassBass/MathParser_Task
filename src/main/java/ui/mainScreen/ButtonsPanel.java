@@ -1,6 +1,8 @@
 package ui.mainScreen;
 
 import model.Equation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ui.equationInfo.EquationInfoDialog;
 import ui.equationSearch.EquationSearchDialog;
 import ui.model.DefaultButton;
@@ -16,6 +18,8 @@ import java.awt.event.ActionListener;
  * @see MainScreen
  */
 public class ButtonsPanel extends JPanel {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ButtonsPanel.class);
+
     private static final String ADD = "Add";
     private static final String CHANGE = "Change";
     private static final String REMOVE = "Remove";
@@ -42,6 +46,8 @@ public class ButtonsPanel extends JPanel {
 
         build();
         setReactions();
+
+        LOGGER.debug("ButtonsPanel of MainScreen was created successful");
     }
 
     /**
@@ -73,6 +79,13 @@ public class ButtonsPanel extends JPanel {
     private final ActionListener clickAdd = e -> EventQueue.invokeLater(new Runnable() {
         @Override
         public void run() {
+            LOGGER.debug("btn_add was clicked");
+
+            LOGGER.debug("""
+                    Trying to create EquationInfoDialog with params:
+                    MainScreen = {}
+                    Equation = {}""",
+                    owner, null);
             new EquationInfoDialog(owner, null).setVisible(true);
         }
     });
@@ -80,10 +93,14 @@ public class ButtonsPanel extends JPanel {
     private final ActionListener clickRemove = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            LOGGER.debug("btn_remove was clicked");
+
             Equation equation = owner.getSelectedEquation();
             if (equation != null){
                 int result = JOptionPane.showConfirmDialog(owner, removeMessage(equation), REMOVE, JOptionPane.YES_NO_OPTION);
                 if (result == 0) owner.removeEquation(equation.getId());
+            }else {
+                LOGGER.debug("No equation has been selected");
             }
         }
     };
@@ -91,9 +108,17 @@ public class ButtonsPanel extends JPanel {
     private final ActionListener clickSearch = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            LOGGER.debug("btn_search was clicked");
+
             if (owner.searchOn) {
                 owner.resetList();
+                LOGGER.debug("Search disabled");
             } else {
+                LOGGER.debug("""
+                    Trying to create EquationSearchDialog with params:
+                    MainScreen = {}""",
+                        owner);
+
                 EventQueue.invokeLater(() -> new EquationSearchDialog(owner).setVisible(true));
             }
         }
@@ -102,7 +127,16 @@ public class ButtonsPanel extends JPanel {
     private final ActionListener clickChange = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            LOGGER.debug("btn_change was clicked");
+
             Equation equation = owner.getSelectedEquation();
+
+            LOGGER.debug("""
+                    Trying to create EquationInfoDialog with params:
+                    MainScreen = {}
+                    Equation = {}""",
+                    owner, equation);
+
             if (equation != null) new EquationInfoDialog(owner,equation).setVisible(true);
         }
     };

@@ -1,5 +1,7 @@
 package ui.equationSearch;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ui.Location;
 import ui.mainScreen.MainScreen;
 import ui.model.DefaultButton;
@@ -16,6 +18,8 @@ import java.awt.event.ActionListener;
  * @see ui.mainScreen.ButtonsPanel
  */
 public class EquationSearchDialog extends JDialog {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EquationSearchDialog.class);
+
     private static final String SEARCH = "Search";
     private static final String EQUATION_RESULT = "Equation result";
     private static final String CANCEL = "Cancel";
@@ -37,6 +41,11 @@ public class EquationSearchDialog extends JDialog {
         createElements();
         build();
         setReactions();
+
+        LOGGER.debug("""
+                        Dialog was created successful with params:
+                        MainScreen = {}""",
+                mainScreen);
     }
 
     /**
@@ -77,13 +86,30 @@ public class EquationSearchDialog extends JDialog {
         btn_search.addActionListener(clickSearch);
     }
 
+    @Override
+    public void setVisible(boolean b) {
+        super.setVisible(b);
+        LOGGER.debug("Visibility of EquationSearchDialog was sets: {}", b);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        LOGGER.debug("Dialog was dispose");
+    }
+
     private final ActionListener clickCancel = e -> dispose();
 
     private final ActionListener clickSearch = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+            LOGGER.debug("btn_search was clicked");
+
             if (txt_number.getText().length() == 0) {
                 String message = "Field of result can't be empty!";
+
+                LOGGER.info(message);
+
                 JOptionPane.showMessageDialog(EquationSearchDialog.this, message, OOPS, JOptionPane.ERROR_MESSAGE);
             } else {
                 try {
@@ -93,11 +119,16 @@ public class EquationSearchDialog extends JDialog {
                         mainScreen.searchEquations(comboBox_condition.getSelectedItem().toString(), num);
                     }else {
                         String message = "Something go wrong, please try again";
+
+                        LOGGER.info(message);
+
                         JOptionPane.showMessageDialog(EquationSearchDialog.this, message, OOPS, JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (NumberFormatException ex) {
                     String message = "Check attentively result for incorrect symbols";
                     JOptionPane.showMessageDialog(EquationSearchDialog.this, message, OOPS, JOptionPane.ERROR_MESSAGE);
+
+                    LOGGER.debug("Exception was thrown:", ex);
                 }
             }
         }

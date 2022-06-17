@@ -2,7 +2,7 @@ package service;
 
 import model.Equation;
 import repository.EquationRepository;
-import repository.EquationRepository_sqlite;
+import repository.EquationRepository_sql;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ public class EquationService_impl implements EquationService {
     private final EquationRepository repository;
 
     public EquationService_impl(){
-        this.repository = new EquationRepository_sqlite();
+        this.repository = new EquationRepository_sql();
     }
 
     public EquationService_impl(EquationRepository repository){
@@ -24,7 +24,7 @@ public class EquationService_impl implements EquationService {
      * @return list of equations from repository
      *
      * @see EquationRepository#getAll()
-     * @see EquationRepository_sqlite#getAll()
+     * @see EquationRepository_sql#getAll()
      */
     @Override
     public ArrayList<Equation> getAll() {
@@ -38,7 +38,7 @@ public class EquationService_impl implements EquationService {
      * null if equation with this id not found
      *
      * @see EquationRepository#get(int)
-     * @see EquationRepository_sqlite#get(int)
+     * @see EquationRepository_sql#get(int)
      */
     @Override
     public Equation get(int id) {
@@ -54,7 +54,7 @@ public class EquationService_impl implements EquationService {
      * empty list if condition == null or if condition has incorrect characters
      *
      * @see EquationRepository#get(String, double)
-     * @see EquationRepository_sqlite#get(String, double)
+     * @see EquationRepository_sql#get(String, double)
      */
     @Override
     public ArrayList<Equation> get(String condition, double result) {
@@ -70,7 +70,7 @@ public class EquationService_impl implements EquationService {
      * false if not
      *
      * @see EquationRepository#set(Equation)
-     * @see EquationRepository_sqlite#set(Equation)
+     * @see EquationRepository_sql#set(Equation)
      */
     @Override
     public boolean set(Equation equation) {
@@ -86,7 +86,7 @@ public class EquationService_impl implements EquationService {
      * false if wasn't
      *
      * @see EquationRepository#add(Equation)
-     * @see EquationRepository_sqlite#add(Equation)
+     * @see EquationRepository_sql#add(Equation)
      */
     @Override
     public boolean add(Equation equation) {
@@ -102,7 +102,7 @@ public class EquationService_impl implements EquationService {
      * false if not
      *
      * @see EquationRepository#remove(int)
-     * @see EquationRepository_sqlite#remove(int)
+     * @see EquationRepository_sql#remove(int)
      */
     @Override
     public boolean remove(int id) {
