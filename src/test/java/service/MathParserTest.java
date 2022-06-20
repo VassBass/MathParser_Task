@@ -65,6 +65,8 @@ class MathParserTest {
         assertEquals("65796.56999999999",mathParser.calculate("(++++++++12,01*5478 - (-2*3) -3.21 - 6/-2)"));
         assertEquals("65818.41",mathParser.calculate("(12,01*5478 - (-2*3)( -3.21 - 6)/-2)"));
         assertEquals("65763.15",mathParser.calculate("(12,01*5478 - 2*3( -3.21 - 6)/-2)"));
+        assertEquals("22.0", mathParser.calculate("7+5*3"));
+        assertEquals("6.0", mathParser.calculate("2+2*2"));
 
         assertNull(mathParser.calculate(" +--+ "));
         assertNull(mathParser.calculate(null));

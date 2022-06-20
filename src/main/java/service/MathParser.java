@@ -201,10 +201,10 @@ public class MathParser implements MathParserService {
             ArrayList<Character> result = new ArrayList<>();
             for (int index = 0;index < chars.length; index++) {
                 if (chars[index] == '+') {
-                    if (result.size() == 0 || (index > 0 && chars[index-1] == '(')) {
+                    if (result.size() == 0 || (index > 0 && chars[index-1] != ')' && !Character.isDigit(chars[index-1]))) {
                         chars[index] = ' ';
                         --index;
-                    }
+                    }else result.add(chars[index]);
                 }else if (chars[index] == ',') {
                     result.add('.');
                 }else if (chars[index] == '(' && index > 0){
